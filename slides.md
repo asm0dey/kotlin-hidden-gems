@@ -6,7 +6,7 @@ lineNumbers: true
 colorSchema: 'dark'
 layout: intro
 highlighter: shiki
-canvasWidth: 980
+canvasWidth: 850
 aspectRatio: '16/9'
 routerMode: 'history'
 selectable: true
@@ -24,7 +24,6 @@ export:
   timeout: 30000
   withClicks: true
   withToc: false
-
 ---
 
 # Unleashing Kotlin's Hidden Arsenal
@@ -38,23 +37,27 @@ export:
 <v-clicks>
 
 - <div v-after>Pasha Finkelshteyn</div>
-- Dev <noto-v1-avocado /> at <logos-jetbrains />
-- ≈10 years in JVM. Mostly <logos-java /> and <logos-kotlin-icon />
-- Started <logos-kotlin-icon /> in pre-1.0 releases
-- <logos-twitter /> asm0di0
-- <logos-mastodon-icon /> @asm0dey@fosstodon.org
+- Dev <emojione-monotone-avocado /> at <simple-icons-jetbrains />
+- ≈10 years in JVM. Mostly <la-java /> and <simple-icons-kotlin />
+- Started <simple-icons-kotlin /> in pre-1.0 releases
+- <simple-icons-twitter /> asm0di0
+- <simple-icons-mastodon /> @asm0dey@fosstodon.org
 
 </v-clicks>
 
 ---
 
-# What you already know
-### Hopefully
+# What you already know <span v-click>(hopefully)</span>
+
+<v-after>
 
 - Type-level null-safety
+- Coroutines
 - Operator overloading
 - Building DSLs
-- Awesome <logos-java /> interop
+- Awesome <la-java /> interop
+
+</v-after>
 
 ---
 
@@ -150,13 +153,13 @@ layout: statement
 
 ---
 
-# AssertiK
+# AssertiK: basics
 
 [willowtreeapps/assertk](https://github.com/willowtreeapps/assertk)
 
 AssertJ-inspired assertions
 
-```kotlin {1|2,3|4,5|6,7}
+```kotlin {1|2,3|4,5|6,7|3,5,7}
 val person = Person(name = "Bob", age = 18)
 assertThat(person.name).isEqualTo("Alice")
 // -> expected:<["Alice"]> but was:<["Bob"]>
@@ -165,6 +168,76 @@ assertThat(person.age, "age").isGreaterThan(20)
 assertThat(person::name).isEqualTo("Alice")
 // -> expected [name]:<["Alice"]> but was:<["Bob"]>
 ```
+
+---
+
+# AssertiK: null-safety
+
+[willowtreeapps/assertk](https://github.com/willowtreeapps/assertk)
+
+```kotlin {1|all}
+val nullString: String? = null
+assertThat(nullString).hasLength(4)
+```
+
+<p v-click> Won't compile! <twemoji-party-popper /></p>
+<v-click>
+
+```kotlin {1,2|all}
+val nullString: String? = null
+assertThat(nullString).isNotNull().hasLength(4)
+// -> expected to not be null
+```
+
+</v-click>
+<p v-after>Fails! <twemoji-party-popper /></p>
+
+---
+
+# AssertiK: soft assertions
+
+[willowtreeapps/assertk](https://github.com/willowtreeapps/assertk)
+
+<p v-click>What if you need to run multiple assertions to know EVERYTHING?</p>
+<v-click>
+
+```kotlin {1|2|3|4,5|7-9|all}
+val string = "Test"
+assertThat(string)
+  .all {
+    startsWith("L")
+    hasLength(3)
+  }
+// -> The following 2 assertions failed:
+//    - expected to start with:<"L"> but was:<"Test">
+//    - expected to have length:<3> but was:<"Test"> (4)
+```
+
+</v-click>
+<v-after>
+
+Also possible with `assertAll {}`
+
+</v-after>
+
+---
+
+# AssertiK: custom assertions
+
+[willowtreeapps/assertk](https://github.com/willowtreeapps/assertk)
+
+Thanks to Kotlin extension functions we can do native-looking custom assertions!
+
+```kotlin {1|2|5|5-6}
+fun Assert<Person>.hasAge(expected: Int) {
+    prop(Person::age).isEqualTo(expected)
+}
+
+assertThat(person).hasAge(20)
+// -> expected [age]:<2[0]> but was:<2[2]> (Person(age=22))
+```
+
+Because <simple-icons-kotlin/> is <simple-icons-awesomelists/>
 
 ---
 

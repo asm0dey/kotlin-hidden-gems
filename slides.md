@@ -3,7 +3,7 @@ theme: dracula
 css: unocss
 background: https://source.unsplash.com/collection/94734566/1920x1080
 lineNumbers: true
-# colorSchema: 'dark'
+colorSchema: 'dark'
 layout: intro
 highlighter: shiki
 canvasWidth: 980
@@ -11,7 +11,7 @@ aspectRatio: '16/9'
 routerMode: 'history'
 selectable: true
 remoteAssets: true
-# download: true
+download: true
 titleTemplate: "Kotlin's Hidden Arsenal"
 info: Pasha Finkelshteyn
 drawings:
@@ -19,6 +19,12 @@ drawings:
   persist: false
   presenterOnly: false
   syncAll: true
+export:
+  format: pdf
+  timeout: 30000
+  withClicks: true
+  withToc: false
+
 ---
 
 # Unleashing Kotlin's Hidden Arsenal

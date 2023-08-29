@@ -1,5 +1,5 @@
 ---
-theme: dracula
+theme: default
 css: unocss
 background: https://source.unsplash.com/collection/94734566/1920x1080
 lineNumbers: true
@@ -31,6 +31,8 @@ export:
 ## <logos-kotlin-icon />
 
 ---
+layout: two-cols
+---
 
 # `whoami`
 
@@ -40,10 +42,18 @@ export:
 - Dev <emojione-monotone-avocado /> at <simple-icons-jetbrains />
 - ≈10 years in JVM. Mostly <la-java /> and <simple-icons-kotlin />
 - Started <simple-icons-kotlin /> in pre-1.0 releases
-- <simple-icons-twitter /> asm0di0
+- <span v-click=6><simple-icons-twitter /> asm0di0</span>
 - <simple-icons-mastodon /> @asm0dey@fosstodon.org
 
 </v-clicks>
+
+::right::
+
+<div v-click=5>
+
+![](/ganesha.png)
+
+</div>
 
 ---
 
@@ -152,6 +162,8 @@ layout: statement
 </v-click>
 
 ---
+routeAlias: assertik
+---
 
 # AssertiK: basics
 
@@ -241,6 +253,197 @@ Because <simple-icons-kotlin/> is <simple-icons-awesomelists/>
 
 ---
 
-# kotlin-compile-testing
+# Strikt
 
-https://github.com/tschuchortdev/kotlin-compile-testing
+https://strikt.io
+
+Reminds of <Link to="assertik">AssertiK</Link>
+
+```kotlin
+val subject = "The Enlightened take things Lightly"
+expectThat(subject)
+  .hasLength(35)
+  .matches(Regex("[\\w\\s]+"))
+  .startsWith("T")
+```
+
+---
+
+# Strikt: strong typing
+
+https://strikt.io
+
+```kotlin {all|2|3|4|5,6}
+val subject: Any? = "The Enlightened take things Lightly"
+expectThat(subject) // type: Assertion.Builder<Any?>
+  .isNotNull()      // type: Assertion.Builder<Any>
+  .isA<String>()    // type: Assertion.Builder<String>
+  // only available on Assertion.Builder<CharSequence>
+  .matches(Regex("[\\w\\s]+"))
+```
+
+---
+
+# Strikt: custom mappings
+
+```kotlin {all|1|2|3|4-6}
+val Assertion.Builder<Pantheon>.realm: Assertion.Builder<String>
+  get() = get { "$ruler to $underworldRuler" } // has access to Pantheon
+val subject = Pantheon.NORSE
+expectThat(subject)
+  .realm
+  .isEqualTo("Odin to Hel")
+```
+
+---
+
+# Other assertion libs
+
+<v-clicks>
+
+1. [Kluent](https://markusamshove.github.io/Kluent/)
+2. Atrium: https://docs.atriumlib.org
+3. [Expekt](http://winterbe.github.io/expekt/)
+4. More? 
+
+</v-clicks>
+
+---
+layout: statement
+---
+
+# How do we check assertions?
+
+<h2 v-click>With runners!</h2>
+
+---
+
+# Kotest
+
+https://kotest.io
+
+What if instead of this:
+<v-click>
+
+```kotlin {lines:false}
+class MyTestClass {
+  @Test fun `A is B`(){  }
+  @Test fun `A is not C`(){  }
+  @Test fun `A is sometimes D`(){  }
+}
+```
+
+</v-click>
+<v-click>
+
+We could have this?
+
+```kotlin {2|3|4|1|all} {lines:false}
+class NestedTestExamples : DescribeSpec({
+   describe("A") {
+      it("is B") {  }
+      it("an inner test too!") {  }
+   }
+})
+
+```
+
+</v-click>
+---
+
+# Kotest
+
+https://kotest.io
+
+Or even like this?
+
+```kotlin {2|3|4,6|8|9,11|1|all}
+class MyTests : BehaviorSpec({
+    given("a broomstick") {
+        `when`("I sit on it") {
+            then("I should be able to fly") {
+                // test code
+            }
+        }
+        `when`("I throw it away") {
+            then("it should come back") {
+                // test code
+            }
+        }
+    }
+})
+```
+
+---
+
+# Kotest: and also
+
+https://kotest.io
+
+<v-clicks>
+
+1. Data-driven testing
+2. Property-based testing
+5. Non-deterministic Testing
+3. Integration with TestContainers
+4. Integration with WireMock
+6. Many-many more!
+
+</v-clicks>
+
+---
+
+# Kotest: testing styles
+<v-clicks>
+<div class="flex-justify-between display-flex">
+
+[Fun Spec](https://kotest.io/docs/framework/testing-styles.html#fun-spec)
+
+[Describe Spec](https://kotest.io/docs/framework/testing-styles.html#describe-spec) (JS + RSpec)
+
+[Should Spec](https://kotest.io/docs/framework/testing-styles.html#should-spec)
+
+</div>
+<div class="flex-justify-between display-flex" v-clicks>
+
+
+  [String Spec](https://kotest.io/docs/framework/testing-styles.html#string-spec)
+  
+  [Behavior Spec](https://kotest.io/docs/framework/testing-styles.html#behavior-spec) (BDD)
+  
+  [Free Spec](https://kotest.io/docs/framework/testing-styles.html#free-spec)
+
+</div>
+<div class="flex-justify-between display-flex">
+
+[Word Spec](https://kotest.io/docs/framework/testing-styles.html#word-spec)
+
+[Feature Spec](https://kotest.io/docs/framework/testing-styles.html#feature-spec) (Cucumber)
+  
+[Expect Spec](https://kotest.io/docs/framework/testing-styles.html#expect-spec)
+
+</div>
+<div class="flex-justify-around display-flex">
+
+[Annotation Spec](https://kotest.io/docs/framework/testing-styles.html#annotation-spec) (Migrate from JUnit)
+
+</div>
+</v-clicks>
+
+---
+layout: statement
+---
+
+# Midway between testing and production
+
+---
+
+# skrape{it}
+
+https://docs.skrape.it
+
+---
+layout: end
+---
+
+# That's all, friends

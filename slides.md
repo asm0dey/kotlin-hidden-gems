@@ -32,6 +32,7 @@ export:
 
 ---
 layout: two-cols
+clicks: 7
 ---
 
 # `whoami`
@@ -441,6 +442,160 @@ layout: statement
 # skrape{it}
 
 https://docs.skrape.it
+
+Features
+
+- Easy to use, idiomatic and type-safe DSL
+- Not bind to a specific test-runner, framework
+- Supports non-blocking fetching / Coroutine support
+
+Capabilities:
+
+- Parsing
+- Http client
+- Assertions
+
+---
+
+# skrape{it}: Parsing
+
+https://docs.skrape.it
+
+```kotlin
+skrape {
+  url = "https://skrape.it"
+  extract {
+    htmlDocument {
+      // parsed document available
+    }
+  }
+}
+```
+
+---
+
+# skrape{it}: Parsing
+
+https://docs.skrape.it
+
+```kotlin {all|1|2-7|2|3|4|5|8-15|8|9|11|12|5,12}
+htmlDocument(someHtml) {
+  meta { 
+    withAttribute = "name" to "foo"
+    findFirst {
+      attribute("content") toBe "bar" // can do any action here
+    }
+  }
+  p {
+    findAll {
+      toBePresentTimes(4)
+        forEach { 
+          text toContain "paragraph" // and here
+        }
+    }
+  }
+}
+```
+
+---
+
+# skrape{it}: Example
+
+```kotlin {all|1|2-4|5|6|7|8|9|all}
+val links: List<String> = skrape(HttpFetcher) {
+  request {
+    url = "https://kotlinlang.org/docs/reference/"
+  }
+  extract {
+    htmlDocument {
+      a {
+        findAll {
+          eachHref
+        }
+      }
+    }
+  }
+}
+```
+
+<v-after>
+
+Site is client-side rendered? Just replace `HttpFetcher` with `BrowserFetcher`!
+
+</v-after>
+
+---
+layout: statement
+---
+
+# Closer to production!
+
+
+---
+
+# jaicf-kotlin
+
+https://help.jaicf.com
+
+Framework to interact with customers over _modern_ channels
+
+```kotlin {all|1|2|3|4-6|9|10|11-13|all}
+val HelloWorldScenario = Scenario {
+    state("main") {
+        activators {
+            event(AlexaEvent.LAUNCH)
+            intent(DialogflowIntent.WELCOME)
+            regex("/start")
+        }
+        
+        action {
+            reactions.run {
+                sayRandom("Hi!", "Hello there!")
+                say("How are you?")
+                telegram?.image("https://somecutecats.com/cat.jpg")
+            }
+        }
+    }
+}
+```
+
+---
+
+# jaicf-kotlin: Features
+
+<v-clicks>
+
+1. Kotlin DSL
+2. Integrates with
+    1. Voice assistants
+    2. Messengers
+    3. Natural Language Understanding frameworks
+    4. Telephony!
+3. Integrates with Spring/Ktor
+
+</v-clicks>
+
+---
+
+# jaicf-kotlin: Ktor Integration
+
+```kotlin {all|1|2|3|4-7|8-10|12}
+fun main() {
+  embeddedServer(Netty, 8000) {
+    routing {
+      httpBotRouting(
+        "/alexa" to AlexaChannel(gameClockBot),
+        "/actions" to ActionsFulfillment.dialogflow(gameClockBot)
+      )
+      get("/") {
+        call.respondText("Hi!")
+      }
+    }
+  }.start(wait = true)
+}
+```
+
+<p v-click="4">This is how an existing API is augmented</p>
 
 ---
 layout: end

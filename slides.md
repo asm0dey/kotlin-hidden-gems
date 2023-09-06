@@ -82,6 +82,17 @@ clicks: 7
 - younameit
 
 ---
+
+# Has an established and not _hidden_ ecosystem
+
+- Ktor<span v-click>. Web framework</span>
+- kotlinx.serialization<span v-click>. <em>Serialization, obviously</em></span>
+- kotlinx.datetime<span v-click>. Like Java DateTime API, but multiplatform</span>
+- kotlinx.coroutines<span v-click> Like loom, but better</span>
+- Exposed<span v-click>. ORM/query builder</span>
+- Arrow<span v-click>. Functional things</span>
+
+---
 layout: image
 image: /16th.png
 ---
@@ -596,6 +607,36 @@ fun main() {
 ```
 
 <p v-click="4">This is how an existing API is augmented</p>
+
+---
+layout: two-cols
+---
+
+<h1 class="grid-self-center">You all know exposed</h1>
+
+<a href="https://github.com/JetBrains/Exposed" v-click="2">https://github.com/JetBrains/Exposed</a>
+<div v-click="3">
+
+DSL API
+
+```kotlin
+object StarWarsFilms : Table() {
+  val id: Column<Int> = integer("id").autoIncrement()
+  val sequelId: Column<Int> = integer("sequel_id").uniqueIndex()
+  val name: Column<String> = varchar("name", 50)
+  val director: Column<String> = varchar("director", 50)
+}
+```
+
+</div>
+
+::right::
+
+<div v-click="1" v-click-hide="3">
+
+![](/right.jpg)
+
+</div>
 
 ---
 layout: end

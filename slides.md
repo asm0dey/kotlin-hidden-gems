@@ -98,6 +98,14 @@ layout: image
 image: /16th.png
 ---
 
+# What will I cover
+
+* Testing
+* Persistence
+* Misc libraries
+
+---
+
 ## But how do we start using it?
 
 ---
@@ -780,6 +788,15 @@ class XdBlog(entity: Entity) : XdEntity(entity) {
   }
   ```
 </v-clicks>
+
+---
+
+# What did we learn?
+
+* Kotlin ecosystem inaccessible to Java developers is enormous
+* Kotlin is very expressive
+* You will expand your abilities utilising the ecosystem
+
 ---
 layout: end
 ---

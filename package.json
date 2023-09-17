@@ -2,7 +2,7 @@
   "name": "kotlin-hidden-gems",
   "private": true,
   "scripts": {
-    "build": "slidev build",
+    "build": "slidev build -c",
     "dev": "slidev",
     "export": "slidev export"
   },

@@ -23,27 +23,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: Checkout
-      - uses: actions/setup-node@v3
-        name: Install node
+      - uses: oven-sh/setup-bun@v1
         with:
-          node-version: 18
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-      - name: Install dependencies
-        run: pnpm install
+          bun-version: latest
       - uses: actions/cache@v3
         id: playwright-cache
         with:
@@ -51,13 +33,11 @@ jobs:
           key: '${{ runner.os }}-playwright-'
       - name: Install Playwright's dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
+        run: bunx playwright install --with-deps
+      - name: Install dependencies
+        run: bun install
       - name: Build presentation web
-        run: pnpm run build --base=/kotlin-hidden-gems/
-      - name: Build presentation PDF
-        run: pnpm run export
-      - name: Copy pdf to build
-        run: cp slides-export.pdf dist
+        run: bun run build --base=/kotlin-hidden-gems/
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact

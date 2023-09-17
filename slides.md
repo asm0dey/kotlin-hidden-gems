@@ -14,6 +14,7 @@ remoteAssets: true
 download: true
 titleTemplate: "Kotlin's Hidden Arsenal"
 info: Pasha Finkelshteyn
+exportFilename: 'index'
 drawings:
   enabled: true
   persist: false
@@ -563,7 +564,7 @@ val HelloWorldScenario = Scenario {
             reactions.run {
                 sayRandom("Hi!", "Hello there!")
                 say("How are you?")
-                telegram?.image("https://somecutecats.com/cat.jpg")
+                telegram?.image("https://thispersondoesnotexist.com")
             }
         }
     }
@@ -615,29 +616,170 @@ layout: two-cols
 <h1 class="grid-self-center">You all know exposed</h1>
 
 <a href="https://github.com/JetBrains/Exposed" v-click="2">https://github.com/JetBrains/Exposed</a>
-<div v-click="3">
+
+::right::
+
+<div v-click="1">
+
+![](/right.jpg)
+
+</div>
+
+
+--- 
+
+# Exposed
+
 
 DSL API
 
-```kotlin
+```kotlin {all|1|2}
 object StarWarsFilms : Table() {
   val id: Column<Int> = integer("id").autoIncrement()
   val sequelId: Column<Int> = integer("sequel_id").uniqueIndex()
   val name: Column<String> = varchar("name", 50)
   val director: Column<String> = varchar("director", 50)
 }
+
 ```
 
-</div>
+---
 
-::right::
+# Krush 
 
-<div v-click="1" v-click-hide="3">
+https://github.com/TouK/krush
 
-![](/right.jpg)
+JPA-like API on top of Exposed
 
-</div>
+This simple class
 
+```kotlin {all|1|2|3-6}
+data class Book(
+   val id: Long? = null,
+   val isbn: String,
+   val title: String,
+   val author: String,
+   val publishDate: LocalDate
+)
+```
+
+---
+
+# Krush 
+
+https://github.com/TouK/krush
+
+JPA-like API on top of Exposed
+
+Can be rurned into this
+
+```kotlin {1,3|all}
+@Entity
+data class Book(
+   @Id @GeneratedValue
+   val id: Long? = null,
+   val isbn: String,
+   val title: String,
+   val author: String,
+   val publishDate: LocalDate
+)
+```
+
+---
+
+# Krush. So what?
+
+Lots of things are generated automatically!
+
+```kotlin {1-3|5|6|7-9|9}
+val book = Book(
+   isbn = "1449373321", publishDate = LocalDate.of(2017, Month.APRIL, 11),
+   title = "Designing Data-Intensive Applications", author = "Martin Kleppmann"
+)
+val persistedBook = BookTable.insert(book)
+val fetchedBook = BookTable.select { BookTable.id eq bookId }.singleOrNull()?.toBook()
+val selectedBooks = (BookTable)
+   .select { BookTable.author like "Martin K%" }
+   .toBookList()
+```
+
+<ul>
+<li v-click=1><code>BookTable</code> is generated</li>
+<li v-click=1><code>insert</code> is generated</li>
+<li v-click=2><code>toBook</code> is generated</li>
+<li v-click=4><code>toBookList</code> is generated</li>
+</ul>
+
+---
+
+# Krush limitations
+
+Features from JPA not implemented:
+
+* lazy association fetching
+* dirty checking
+* caching
+* versioning / optimistic locking
+
+Others:
+
+* For N-N relations automatic updates for intermediate tables
+
+---
+layout: statement
+---
+
+# But what if you need something different?
+
+---
+
+# Xodus DNQ
+
+Kotlin dialect for [Xodus](https://github.com/JetBrains/xodus)
+
+Xodus is an in-file transactional non-SQL database behind YouTrack
+
+```kotlin {all|1|2|3|4|7|9}
+class XdPost(entity: Entity) : XdEntity(entity) { // should extend XdEntity
+    companion object : XdNaturalEntityType<XdPost>() // shoulf have XdEntityType companion
+    var publishedAt by xdDateTimeProp() // optional DateTime
+    var text by xdRequiredStringProp() // required String
+}
+
+class XdBlog(entity: Entity) : XdEntity(entity) {
+    companion object : XdNaturalEntityType<XdBlog>()
+    val posts by xdLink0_N(XdPost) // 1-N XdPost reference
+}
+```
+
+---
+
+# Quering Xodus
+
+<v-clicks>
+
+* Everything shoudl be wrapped into transacion
+  ```kotlin
+  val blog = xodusStore.transactional {
+    XdBlog.all().firstOrNull() ?: XdBlog.new()
+  }
+  ```
+* Interact with fetched entities
+  ```kotlin {all|1|2,3|5}
+  val post = XdPost.new {
+      this.publishedAt = DateTime.now()
+      this.text = args.firstOrNull() ?: "Empty post"
+  }
+  blog.posts.add(post)
+  ```
+* Read-only transactions
+  ```kotlin
+  xodusStore.transactional(readonly = true) {
+      for (post in blog.posts)
+          println("${post.publishedAt}: ${post.text}")
+  }
+  ```
+</v-clicks>
 ---
 layout: end
 ---

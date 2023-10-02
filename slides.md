@@ -1,7 +1,6 @@
 ---
 theme: default
 css: unocss
-background: https://source.unsplash.com/collection/94734566/1920x1080
 lineNumbers: true
 colorSchema: 'dark'
 layout: intro
@@ -12,7 +11,7 @@ routerMode: 'history'
 selectable: true
 remoteAssets: true
 download: true
-titleTemplate: "Kotlin's Hidden Arsenal"
+titleTemplate: "Discovering Kotlin's Untapped Potential"
 info: Pasha Finkelshteyn
 exportFilename: 'index'
 drawings:
@@ -27,7 +26,7 @@ export:
   withToc: false
 ---
 
-# Unleashing Kotlin's Hidden Arsenal
+# Discovering Kotlin's Untapped Potential
 
 ## <logos-kotlin-icon />
 
@@ -86,12 +85,12 @@ clicks: 7
 
 # Has an established and not _hidden_ ecosystem
 
-- Ktor<span v-click>. Web framework</span>
+- Ktor<span v-click>. Web framework and multiplatform client</span>
 - kotlinx.serialization<span v-click>. <em>Serialization, obviously</em></span>
 - kotlinx.datetime<span v-click>. Like Java DateTime API, but multiplatform</span>
-- kotlinx.coroutines<span v-click> Like loom, but better</span>
+- kotlinx.coroutines<span v-click> Structured concurrency</span>
 - Exposed<span v-click>. ORM/query builder</span>
-- Arrow<span v-click>. Functional things</span>
+- Arrow<span v-click>. Idiomatic functional programmin: <code>Either</code>, <code>@optics</code>, non-empty collections, etc.</span>
 
 ---
 layout: image
@@ -147,6 +146,13 @@ car.drive(Direction.NORTH) // returns OK
 verify { car.drive(Direction.NORTH) }
 confirmVerified(car)
 ```
+
+Features:
+
+1. Reified generics: `mockk<Car>()` would be `mockk(Car.class)` in J-language
+2. Receivers: `every { car.drive(Direction.NORTH) } returns Outcome.OK` creates a proxy call!
+3. Infix functions (`returns`)
+
 
 ---
 
@@ -272,6 +278,8 @@ assertThat(person).hasAge(20)
 
 Because <simple-icons-kotlin/> is <simple-icons-awesomelists/>
 
+Feature: extension methods
+
 ---
 
 # Strikt
@@ -368,6 +376,8 @@ class NestedTestExamples : DescribeSpec({
 })
 
 ```
+
+Feature: `it` is an implicit first argument of lambda
 
 </v-click>
 ---
@@ -599,17 +609,17 @@ val HelloWorldScenario = Scenario {
 
 # jaicf-kotlin: Ktor Integration
 
-```kotlin {all|1|2|3|4-7|8-10|12}
+```kotlin {all|1|2|3|4-6|7  -10|12}
 fun main() {
   embeddedServer(Netty, 8000) {
     routing {
+      get("/") {
+        call.respondText("Hi!")
+      }
       httpBotRouting(
         "/alexa" to AlexaChannel(gameClockBot),
         "/actions" to ActionsFulfillment.dialogflow(gameClockBot)
       )
-      get("/") {
-        call.respondText("Hi!")
-      }
     }
   }.start(wait = true)
 }
@@ -745,7 +755,7 @@ layout: statement
 
 Kotlin dialect for [Xodus](https://github.com/JetBrains/xodus)
 
-Xodus is an in-file transactional non-SQL database behind YouTrack
+Xodus is an in-file transactional non-SQL database behind YouTrack (inspired by BerkleyDB)
 
 ```kotlin {all|1|2|3|4|7|9}
 class XdPost(entity: Entity) : XdEntity(entity) { // should extend XdEntity

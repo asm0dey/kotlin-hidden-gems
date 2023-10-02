@@ -7,7 +7,7 @@
     "export": "slidev export"
   },
   "dependencies": {
-    "@slidev/cli": "^0.43.3",
+    "@slidev/cli": "^0.43.6",
     "@slidev/theme-apple-basic": "^0.20.0",
     "@slidev/theme-default": "latest",
     "@slidev/theme-seriph": "latest",
@@ -19,9 +19,9 @@
     "@iconify-json/la": "^1.1.5",
     "@iconify-json/logos": "^1.1.37",
     "@iconify-json/noto-v1": "^1.1.8",
-    "@iconify-json/simple-icons": "^1.1.70",
+    "@iconify-json/simple-icons": "^1.1.73",
     "@iconify-json/twemoji": "^1.1.12",
-    "playwright-chromium": "^1.38.0",
+    "playwright-chromium": "^1.38.1",
     "prismjs": "^1.29.0"
   }
 }

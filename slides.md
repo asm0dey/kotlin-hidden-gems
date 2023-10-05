@@ -812,3 +812,9 @@ layout: end
 ---
 
 # That's all, friends
+
+
+<span v-click=6><simple-icons-twitter /> asm0di0</span>
+
+<simple-icons-mastodon /> @asm0dey@fosstodon.org
+

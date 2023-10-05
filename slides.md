@@ -644,7 +644,7 @@ layout: two-cols
 </div>
 
 
---- 
+---
 
 # Exposed
 
@@ -808,13 +808,10 @@ class XdBlog(entity: Entity) : XdEntity(entity) {
 * You will expand your abilities utilising the ecosystem
 
 ---
-layout: end
----
 
 # That's all, friends
 
-
-<span v-click=6><simple-icons-twitter /> asm0di0</span>
-
-<simple-icons-mastodon /> @asm0dey@fosstodon.org
-
+<ul>
+  <li><simple-icons-twitter/> asm0di0</li>
+  <li><simple-icons-mastodon /> @asm0dey@fosstodon.org</li>
+</ul>
